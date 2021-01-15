@@ -9,7 +9,7 @@ namespace ConsoleApp4.Models.Repository
 {
     public class BookingManagerRepository : IBookingManager
     {
-        //we initiate the collection of room booked by guess
+        //we initiate the collection of room booked 
         public List<GuestBookedRoom> guestBookedRooms = new List<GuestBookedRoom>();
 
         // we generate the list of room 
@@ -34,14 +34,14 @@ namespace ConsoleApp4.Models.Repository
                         Name = guest
                     };
 
-                    // booked the room
+                    // book the room
                     var theRoomState = new RoomState
                     {
                         DateBooked = date,
                         TheRoom = new Room { RoomId = room}
                     };
 
-                    // add booked room to the list
+                    // add booked room to the collection
                     guestBookedRooms.Add(
                         new GuestBookedRoom
                         {
@@ -65,6 +65,7 @@ namespace ConsoleApp4.Models.Repository
         {
             try
             {
+                // if nothing book then return all the room as available
                 if (!guestBookedRooms.Any())
                 {
                     return rooms.Select(rm => rm.RoomId);
@@ -75,11 +76,9 @@ namespace ConsoleApp4.Models.Repository
                     var bookedRoomIds = guestBookedRooms.Where(gbr => gbr.TheRoomState.DateBooked == date)
                         .Select(rm => rm.TheRoomState.TheRoom.RoomId);
 
-                    // return the available room for that date 
-                    var roomAvailables = rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
+                    // return the available room for that date by filtering out all booked room
+                    return rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
                        .Select(rm => rm.RoomId);
-
-                    return roomAvailables.Any() ? roomAvailables : new List<int> { };
                 }
             }
             catch (Exception)
@@ -94,7 +93,7 @@ namespace ConsoleApp4.Models.Repository
             
             try
             {
-                //check if room collection is not empty then check if the room is available
+                //check if room collection is not empty then check if a room is available
                 if (guestBookedRooms.Any())
                 {
                     // if condition matches for argument then room is booked for that date

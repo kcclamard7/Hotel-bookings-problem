@@ -26,7 +26,7 @@ namespace ConsoleApp4
 
                 //adding code to display available room
                 var rooms = bm.getAvailableRooms(today);
-                Console.WriteLine($"{rooms.Count()} availble rooms today: {String.Join(",", rooms.ToArray())}\n");
+                Console.WriteLine($"you are lucky! {rooms.Count()} available rooms left for today: {String.Join(", ", rooms.ToArray())}\n");
 
                 bm.AddBooking("Li", 101, today);
 

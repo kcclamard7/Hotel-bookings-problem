@@ -10,3 +10,4 @@ C:\Users\ckaya\source\repos\ConsoleApp4\ConsoleApp4\obj\Debug\netcoreapp3.1\Cons
 C:\Users\ckaya\source\repos\ConsoleApp4\ConsoleApp4\obj\Debug\netcoreapp3.1\ConsoleApp4.dll
 C:\Users\ckaya\source\repos\ConsoleApp4\ConsoleApp4\obj\Debug\netcoreapp3.1\ConsoleApp4.pdb
 C:\Users\ckaya\source\repos\ConsoleApp4\ConsoleApp4\obj\Debug\netcoreapp3.1\ConsoleApp4.genruntimeconfig.cache
+C:\Users\ckaya\source\repos\ConsoleApp4\ConsoleApp4\obj\Debug\netcoreapp3.1\ConsoleApp4.csprojAssemblyReference.cache
