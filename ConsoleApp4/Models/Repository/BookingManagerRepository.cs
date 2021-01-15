@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleApp4.Models.Repository
 {
@@ -21,12 +22,12 @@ namespace ConsoleApp4.Models.Repository
             new Room{RoomId = 203}
         };
 
-        public void AddBooking(string guest, int room, DateTime date)
+        public async Task AddBooking(string guest, int room, DateTime date)
         {
             try
             {
                 //checking if room available before adding
-                if(IsRoomAvailable(room, date))
+                if(await IsRoomAvailable(room, date).ConfigureAwait(false))
                 {
                     // create guest
                     var theGuest = new Guest
@@ -61,14 +62,14 @@ namespace ConsoleApp4.Models.Repository
             }
         }
 
-        public IEnumerable<int> getAvailableRooms(DateTime date)
+        public Task<IEnumerable<int>> getAvailableRooms(DateTime date)
         {
             try
             {
                 // if nothing book then return all the room as available
                 if (!guestBookedRooms.Any())
                 {
-                    return rooms.Select(rm => rm.RoomId);
+                    return Task.FromResult(rooms.Select(rm => rm.RoomId));
                 }
                 else
                 {
@@ -77,8 +78,8 @@ namespace ConsoleApp4.Models.Repository
                         .Select(rm => rm.TheRoomState.TheRoom.RoomId);
 
                     // return the available room for that date by filtering out all booked room
-                    return rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
-                       .Select(rm => rm.RoomId);
+                    return Task.FromResult(rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
+                       .Select(rm => rm.RoomId));
                 }
             }
             catch (Exception)
@@ -88,7 +89,7 @@ namespace ConsoleApp4.Models.Repository
             }
         }
 
-        public bool IsRoomAvailable(int room, DateTime date)
+        public Task<bool> IsRoomAvailable(int room, DateTime date)
         {
             
             try
@@ -97,12 +98,12 @@ namespace ConsoleApp4.Models.Repository
                 if (guestBookedRooms.Any())
                 {
                     // if condition matches for argument then room is booked for that date
-                    return !guestBookedRooms.Any(br => br.TheRoomState.DateBooked == date && br.TheRoomState.TheRoom.RoomId == room);
+                    return Task.FromResult(!guestBookedRooms.Any(br => br.TheRoomState.DateBooked == date && br.TheRoomState.TheRoom.RoomId == room));
                 }
                 else
                 {
                     // if room collection empty assume room is available
-                    return true;
+                    return Task.FromResult(true);
                 }
             }
             catch (Exception)

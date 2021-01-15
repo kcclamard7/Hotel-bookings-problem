@@ -3,12 +3,13 @@ using ConsoleApp4.Models.Repository;
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ConsoleApp4
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -18,17 +19,23 @@ namespace ConsoleApp4
                 // add booking
                 var today = new DateTime(2012, 3, 28);
 
-                Console.WriteLine(bm.IsRoomAvailable(101, today));
+                Console.WriteLine(await bm.IsRoomAvailable(101, today)
+                    .ConfigureAwait(false));
 
-                bm.AddBooking("Patel", 101, today);
+                await bm.AddBooking("Patel", 101, today)
+                    .ConfigureAwait(false);
 
-                Console.WriteLine(bm.IsRoomAvailable(101, today));
+                Console.WriteLine(await bm.IsRoomAvailable(101, today)
+                    .ConfigureAwait(false));
 
                 //adding code to display available room
-                var rooms = bm.getAvailableRooms(today);
+                var rooms = await bm.getAvailableRooms(today)
+                    .ConfigureAwait(false);
+
                 Console.WriteLine($"you are lucky! {rooms.Count()} available rooms left for today: {String.Join(", ", rooms.ToArray())}\n");
 
-                bm.AddBooking("Li", 101, today);
+                await bm.AddBooking("Li", 101, today)
+                    .ConfigureAwait(false);
 
             }
             catch (Exception ex) 
