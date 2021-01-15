@@ -43,12 +43,12 @@ namespace ConsoleApp4.Models.Repository
                     };
 
                     // add booked room to the collection
-                    guestBookedRooms.Add(
+                    await Task.Run(() =>guestBookedRooms.Add(
                         new GuestBookedRoom
                         {
                             TheGuest = theGuest,
                             TheRoomState = theRoomState
-                        });
+                        }));
                 }
                 else
                 {
@@ -62,14 +62,15 @@ namespace ConsoleApp4.Models.Repository
             }
         }
 
-        public Task<IEnumerable<int>> getAvailableRooms(DateTime date)
+        public async Task<IEnumerable<int>> getAvailableRooms(DateTime date)
         {
             try
             {
                 // if nothing book then return all the room as available
                 if (!guestBookedRooms.Any())
                 {
-                    return Task.FromResult(rooms.Select(rm => rm.RoomId));
+                    return await Task.Run(() => rooms.Select(rm => rm.RoomId));
+ 
                 }
                 else
                 {
@@ -78,7 +79,7 @@ namespace ConsoleApp4.Models.Repository
                         .Select(rm => rm.TheRoomState.TheRoom.RoomId);
 
                     // return the available room for that date by filtering out all booked room
-                    return Task.FromResult(rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
+                    return await Task.Run(() => rooms.Where(rom => !bookedRoomIds.Contains(rom.RoomId))
                        .Select(rm => rm.RoomId));
                 }
             }
@@ -89,7 +90,7 @@ namespace ConsoleApp4.Models.Repository
             }
         }
 
-        public Task<bool> IsRoomAvailable(int room, DateTime date)
+        public async Task<bool> IsRoomAvailable(int room, DateTime date)
         {
             
             try
@@ -98,12 +99,12 @@ namespace ConsoleApp4.Models.Repository
                 if (guestBookedRooms.Any())
                 {
                     // if condition matches for argument then room is booked for that date
-                    return Task.FromResult(!guestBookedRooms.Any(br => br.TheRoomState.DateBooked == date && br.TheRoomState.TheRoom.RoomId == room));
+                    return await Task.Run(() => !guestBookedRooms.Any(br => br.TheRoomState.DateBooked == date && br.TheRoomState.TheRoom.RoomId == room));
                 }
                 else
                 {
                     // if room collection empty assume room is available
-                    return Task.FromResult(true);
+                    return await Task.FromResult(true);
                 }
             }
             catch (Exception)
